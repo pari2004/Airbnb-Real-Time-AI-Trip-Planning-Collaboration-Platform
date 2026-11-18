@@ -1,0 +1,34 @@
+# ---- Secrets (zero-tolerance: never commit) ----
+.env
+*.env.local
+secrets/
+
+# ---- Java / Maven ----
+backend/target/
+*.class
+*.jar
+!**/src/**/*.jar
+.mvn/
+
+# ---- Node / React ----
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+npm-debug.log*
+yarn-error.log*
+
+# ---- IDE ----
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+
+# ---- OS ----
+.DS_Store
+Thumbs.db
+
+# ---- Logs ----
+*.log
+logs/

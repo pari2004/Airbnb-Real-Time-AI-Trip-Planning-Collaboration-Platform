@@ -1,0 +1,70 @@
+spring:
+  application:
+    name: trip-war-room
+
+  # ---- Reactive datasource (runtime queries) ----
+  r2dbc:
+    url: ${R2DBC_URL:r2dbc:postgresql://localhost:5432/warroom}
+    username: ${DB_USERNAME:warroom}
+    password: ${DB_PASSWORD:warroom}
+    pool:
+      initial-size: 5
+      max-size: 20
+      max-idle-time: 30m
+
+  # ---- Flyway (migrations run over JDBC) ----
+  flyway:
+    enabled: true
+    url: ${JDBC_URL:jdbc:postgresql://localhost:5432/warroom}
+    user: ${DB_USERNAME:warroom}
+    password: ${DB_PASSWORD:warroom}
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+server:
+  port: ${SERVER_PORT:8080}
+
+# ---- Application config ----
+app:
+  jwt:
+    # Base64 or plain secret, injected via env in real runs. Dev default is for local only.
+    secret: ${JWT_SECRET:dev-only-insecure-secret-change-me-this-must-be-at-least-32-bytes-long}
+    access-token-ttl-seconds: ${JWT_ACCESS_TTL:3600}      # <= 1 hour per PRD 10.1
+    refresh-token-ttl-seconds: ${JWT_REFRESH_TTL:604800}  # 7 days
+    issuer: trip-war-room
+  cors:
+    allowed-origins: ${CORS_ORIGINS:http://localhost:5173,http://localhost:3000}
+  concierge:
+    # Hard-constraint engine knobs (PRD 6.2)
+    proximity-radius-km: ${CONCIERGE_RADIUS_KM:2.0}
+    hours-buffer-minutes: ${CONCIERGE_BUFFER_MIN:30}
+    rank-weight-proximity: 0.40
+    rank-weight-rating: 0.30
+    rank-weight-budget-headroom: 0.30
+    # LLM adapter: 'template' (no key, deterministic grounded answer) or 'openai' / 'anthropic'
+    llm:
+      provider: ${LLM_PROVIDER:template}
+      api-key: ${LLM_API_KEY:}
+      base-url: ${LLM_BASE_URL:}
+      model: ${LLM_MODEL:}
+  board:
+    persist-interval-ms: 2000   # batch board-state persistence (PRD 9.4)
+  seed:
+    enabled: ${SEED_ENABLED:true}
+    destination-file: classpath:seed/lisbon.json
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+  endpoint:
+    health:
+      show-details: when-authorized
+
+logging:
+  pattern:
+    # correlation id (trip room session) surfaced on every log line when present
+    console: "%d{HH:mm:ss.SSS} %-5level [%X{correlationId:-}] %logger{36} - %msg%n"
+  level:
+    com.airbnb.warroom: ${LOG_LEVEL:INFO}

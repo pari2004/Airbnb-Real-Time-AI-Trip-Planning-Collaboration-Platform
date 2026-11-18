@@ -1,0 +1,10 @@
+services:
+  backend:
+    ports:
+      - "8081:8080"
+  frontend:
+    environment:
+      VITE_API_BASE: http://localhost:8081
+      VITE_WS_BASE: ws://localhost:8081
+    ports:
+      - "5174:5173"

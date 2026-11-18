@@ -1,0 +1,184 @@
+{
+  "info": {
+    "name": "AI Trip War Room",
+    "description": "REST collection for the AI Trip War Room API. Set {{base}} (default http://localhost:8080). Run 'Auth / Login (leader)' first — it stores {{token}}, {{tripId}}, etc. via test scripts.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "base", "value": "http://localhost:8080" },
+    { "key": "token", "value": "" },
+    { "key": "adminToken", "value": "" },
+    { "key": "tripId", "value": "" },
+    { "key": "inviteCode", "value": "" },
+    { "key": "venueId", "value": "" },
+    { "key": "itemId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base}}/api/v1/auth/register",
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"new@traveler.io\",\n  \"password\": \"Passw0rd!\",\n  \"displayName\": \"New Traveler\",\n  \"budgetCeiling\": 40,\n  \"dietaryTags\": [\"vegan\"]\n}" }
+          }
+        },
+        {
+          "name": "Login (leader)",
+          "event": [{ "listen": "test", "script": { "exec": ["pm.collectionVariables.set('token', pm.response.json().accessToken);"] } }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base}}/api/v1/auth/login",
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"leader@warroom.test\",\n  \"password\": \"Leader123!\"\n}" }
+          }
+        },
+        {
+          "name": "Login (admin)",
+          "event": [{ "listen": "test", "script": { "exec": ["pm.collectionVariables.set('adminToken', pm.response.json().accessToken);"] } }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base}}/api/v1/auth/login",
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"admin@warroom.test\",\n  \"password\": \"Admin123!\"\n}" }
+          }
+        },
+        { "name": "Me", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{base}}/api/v1/auth/me" } }
+      ]
+    },
+    {
+      "name": "Trips",
+      "item": [
+        {
+          "name": "Create trip",
+          "event": [{ "listen": "test", "script": { "exec": ["var d=pm.response.json(); pm.collectionVariables.set('tripId', d.tripId); pm.collectionVariables.set('inviteCode', d.inviteCode);"] } }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base}}/api/v1/trips",
+            "body": { "mode": "raw", "raw": "{\n  \"destination\": \"Lisbon, Portugal\",\n  \"startDate\": \"2026-11-10\",\n  \"endDate\": \"2026-11-14\",\n  \"totalBudget\": 1200,\n  \"maxParticipants\": 8\n}" }
+          }
+        },
+        { "name": "Get trip", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{base}}/api/v1/trips/{{tripId}}" } },
+        {
+          "name": "Join trip",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base}}/api/v1/trips/join",
+            "body": { "mode": "raw", "raw": "{ \"inviteCode\": \"{{inviteCode}}\" }" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Venues",
+      "item": [
+        {
+          "name": "Catalog",
+          "event": [{ "listen": "test", "script": { "exec": ["var vs=pm.response.json().venues; if(vs.length) pm.collectionVariables.set('venueId', vs[0].venueId);"] } }],
+          "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{base}}/api/v1/destinations/Lisbon, Portugal/venues" }
+        },
+        {
+          "name": "Admin upload dataset",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }, { "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base}}/api/v1/admin/venues",
+            "body": { "mode": "raw", "raw": "{\n  \"destination\": \"Porto, Portugal\",\n  \"venues\": [\n    { \"name\": \"Porto Vegan\", \"category\": \"dinner\", \"pricePerPerson\": 18,\n      \"dietaryTags\": [\"vegan\"], \"hours\": { \"open\": \"12:00\", \"close\": \"23:00\" },\n      \"coordinates\": { \"lat\": 41.14, \"lng\": -8.61 }, \"rating\": 4.5, \"description\": \"vegan\" }\n  ]\n}" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Board",
+      "item": [
+        {
+          "name": "Pin item",
+          "event": [{ "listen": "test", "script": { "exec": ["pm.collectionVariables.set('itemId', pm.response.json().itemId);"] } }],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base}}/api/v1/trips/{{tripId}}/board/items",
+            "body": { "mode": "raw", "raw": "{ \"venueId\": \"{{venueId}}\", \"dayIndex\": 0, \"startTime\": \"17:00\", \"endTime\": \"18:30\" }" }
+          }
+        },
+        {
+          "name": "Move item (stale version -> 409)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base}}/api/v1/trips/{{tripId}}/board/move",
+            "body": { "mode": "raw", "raw": "{ \"itemId\": \"{{itemId}}\", \"dayIndex\": 1, \"startTime\": \"17:00\", \"endTime\": \"18:30\", \"positionVersion\": 99 }" }
+          }
+        },
+        { "name": "Board snapshot", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{base}}/api/v1/trips/{{tripId}}/board" } },
+        { "name": "Lock item", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{base}}/api/v1/trips/{{tripId}}/board/items/{{itemId}}/lock" } }
+      ]
+    },
+    {
+      "name": "Budget & Analytics",
+      "item": [
+        { "name": "Budget", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{base}}/api/v1/trips/{{tripId}}/budget" } },
+        { "name": "Analytics", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{base}}/api/v1/trips/{{tripId}}/analytics" } }
+      ]
+    },
+    {
+      "name": "AI Concierge",
+      "item": [
+        {
+          "name": "Ask (anchored)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base}}/api/v1/trips/{{tripId}}/ai/ask",
+            "body": { "mode": "raw", "raw": "{ \"question\": \"Suggest a dinner spot near our 5 PM tour under $25/person\", \"anchorItemId\": \"{{itemId}}\" }" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Voting",
+      "item": [
+        {
+          "name": "Open vote",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base}}/api/v1/trips/{{tripId}}/votes",
+            "body": { "mode": "raw", "raw": "{ \"itemId\": \"{{itemId}}\", \"candidateVenueIds\": [\"{{venueId}}\"], \"durationSeconds\": 60 }" }
+          }
+        },
+        {
+          "name": "Cast vote",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base}}/api/v1/trips/{{tripId}}/votes/cast",
+            "body": { "mode": "raw", "raw": "{ \"itemId\": \"{{itemId}}\", \"choiceVenueId\": \"{{venueId}}\" }" }
+          }
+        },
+        {
+          "name": "Resolve vote",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }],
+            "url": "{{base}}/api/v1/trips/{{tripId}}/votes/resolve",
+            "body": { "mode": "raw", "raw": "{ \"itemId\": \"{{itemId}}\" }" }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Dashboard & Recommendations",
+      "item": [
+        { "name": "Dashboard", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{base}}/api/v1/me/dashboard" } },
+        { "name": "Recommendations", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{base}}/api/v1/me/recommendations" } },
+        { "name": "Retrain", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{base}}/api/v1/me/recommendations/retrain" } }
+      ]
+    }
+  ]
+}

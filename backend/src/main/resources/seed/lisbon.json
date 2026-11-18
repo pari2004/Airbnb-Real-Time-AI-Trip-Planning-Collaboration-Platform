@@ -1,0 +1,145 @@
+{
+  "destination": "Lisbon, Portugal",
+  "venues": [
+    {
+      "name": "Taberna da Rua",
+      "category": "dinner",
+      "pricePerPerson": 22.00,
+      "dietaryTags": ["vegetarian"],
+      "hours": { "open": "11:00", "close": "22:00" },
+      "coordinates": { "lat": 38.7139, "lng": -9.1394 },
+      "rating": 4.6,
+      "description": "Neighborhood bistro in Baixa known for a fixed-price prix fixe menu with a daily vegetarian main."
+    },
+    {
+      "name": "Verde Alfama",
+      "category": "dinner",
+      "pricePerPerson": 18.50,
+      "dietaryTags": ["vegetarian", "vegan", "gluten-free"],
+      "hours": { "open": "12:00", "close": "23:00" },
+      "coordinates": { "lat": 38.7118, "lng": -9.1304 },
+      "rating": 4.8,
+      "description": "Plant-forward Alfama kitchen with fully vegan and gluten-free tasting options and river views."
+    },
+    {
+      "name": "Halal House Mouraria",
+      "category": "dinner",
+      "pricePerPerson": 16.00,
+      "dietaryTags": ["halal", "vegetarian"],
+      "hours": { "open": "11:30", "close": "22:30" },
+      "coordinates": { "lat": 38.7165, "lng": -9.1360 },
+      "rating": 4.4,
+      "description": "Family-run Mouraria spot serving certified halal grills and vegetarian mezze platters."
+    },
+    {
+      "name": "Cais Gourmet Prime",
+      "category": "dinner",
+      "pricePerPerson": 120.00,
+      "dietaryTags": ["gluten-free"],
+      "hours": { "open": "19:00", "close": "23:30" },
+      "coordinates": { "lat": 38.7072, "lng": -9.1460 },
+      "rating": 4.9,
+      "description": "High-end waterfront tasting-menu restaurant — included to exercise the budget-ceiling breach case."
+    },
+    {
+      "name": "Miradouro Sunset Bar",
+      "category": "dinner",
+      "pricePerPerson": 28.00,
+      "dietaryTags": ["vegetarian", "vegan"],
+      "hours": { "open": "18:00", "close": "20:00" },
+      "coordinates": { "lat": 38.7156, "lng": -9.1290 },
+      "rating": 4.3,
+      "description": "Rooftop small-plates bar with a very narrow 18:00-20:00 service window — exercises the operating-hours constraint."
+    },
+    {
+      "name": "Time Out Market Food Hall",
+      "category": "dinner",
+      "pricePerPerson": 24.00,
+      "dietaryTags": ["vegetarian", "vegan", "halal", "gluten-free"],
+      "hours": { "open": "10:00", "close": "23:59" },
+      "coordinates": { "lat": 38.7072, "lng": -9.1458 },
+      "rating": 4.5,
+      "description": "Large food hall with stalls covering every major dietary tag; long hours make it a reliable fallback."
+    },
+    {
+      "name": "Belem Pastel Cafe",
+      "category": "cafe",
+      "pricePerPerson": 8.00,
+      "dietaryTags": ["vegetarian"],
+      "hours": { "open": "08:00", "close": "19:00" },
+      "coordinates": { "lat": 38.6975, "lng": -9.2064 },
+      "rating": 4.7,
+      "description": "Historic pastelaria near the Belem tower famous for custard tarts and coffee."
+    },
+    {
+      "name": "Castelo de Sao Jorge Tour",
+      "category": "activity",
+      "pricePerPerson": 15.00,
+      "dietaryTags": [],
+      "hours": { "open": "09:00", "close": "21:00" },
+      "coordinates": { "lat": 38.7139, "lng": -9.1335 },
+      "rating": 4.6,
+      "description": "Guided tour of the hilltop Moorish castle with panoramic city and river views."
+    },
+    {
+      "name": "Tram 28 Heritage Ride",
+      "category": "activity",
+      "pricePerPerson": 3.00,
+      "dietaryTags": [],
+      "hours": { "open": "06:00", "close": "23:00" },
+      "coordinates": { "lat": 38.7110, "lng": -9.1300 },
+      "rating": 4.2,
+      "description": "Classic yellow tram route winding through Graca, Alfama, Baixa and Estrela."
+    },
+    {
+      "name": "Oceanario de Lisboa",
+      "category": "activity",
+      "pricePerPerson": 25.00,
+      "dietaryTags": [],
+      "hours": { "open": "10:00", "close": "20:00" },
+      "coordinates": { "lat": 38.7633, "lng": -9.0937 },
+      "rating": 4.8,
+      "description": "One of Europe's largest aquariums in Parque das Nacoes; roughly 90-minute visit."
+    },
+    {
+      "name": "LX Factory Creative Walk",
+      "category": "activity",
+      "pricePerPerson": 0.00,
+      "dietaryTags": [],
+      "hours": { "open": "08:00", "close": "22:00" },
+      "coordinates": { "lat": 38.7033, "lng": -9.1790 },
+      "rating": 4.4,
+      "description": "Free self-guided stroll through a converted industrial complex of shops, murals and studios."
+    },
+    {
+      "name": "Alfama Boutique Lodge",
+      "category": "lodging",
+      "pricePerPerson": 65.00,
+      "dietaryTags": [],
+      "hours": { "open": "00:00", "close": "23:59" },
+      "coordinates": { "lat": 38.7125, "lng": -9.1310 },
+      "rating": 4.5,
+      "description": "Small boutique guesthouse in the heart of Alfama, walking distance to the castle and river."
+    },
+    {
+      "name": "Baixa Central Apartments",
+      "category": "lodging",
+      "pricePerPerson": 48.00,
+      "dietaryTags": [],
+      "hours": { "open": "00:00", "close": "23:59" },
+      "coordinates": { "lat": 38.7110, "lng": -9.1390 },
+      "rating": 4.3,
+      "description": "Self-catering apartments in downtown Baixa, steps from Rossio and the metro."
+    },
+    {
+      "name": "Principe Real Garden Rooms",
+      "category": "lodging",
+      "pricePerPerson": 150.00,
+      "dietaryTags": [],
+      "hours": { "open": "00:00", "close": "23:59" },
+      "coordinates": { "lat": 38.7175, "lng": -9.1520 },
+      "rating": 4.9,
+      "description": "Upscale design hotel by the botanical garden — a premium lodging option above typical group budgets."
+    }
+  ]
+}
